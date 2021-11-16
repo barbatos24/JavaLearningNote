@@ -94,10 +94,21 @@ public class DistributeLockService {
          * redis加锁
          */
         String value = System.currentTimeMillis() + 10000 + "";
-        if (!redisLock.lock1(product_id, value)) {
+
+        //lock1这种写法容易造成线程死锁
+//        if (!redisLock.lock1(product_id, value)) {
+//            //系统繁忙，请稍后再试
+//            throw new CongestionException();
+//        }
+
+        //lock2这种写法解决了lock1的问题，但是当有两个商品id相同的线程同时执行还是会存在线程安全问题
+        if (!redisLock.lock2(product_id, value)) {
             //系统繁忙，请稍后再试
             throw new CongestionException();
         }
+
+
+
         if (stock.get(product_id) == 0) {
             return "活动已经结束了";
             //已近买完了

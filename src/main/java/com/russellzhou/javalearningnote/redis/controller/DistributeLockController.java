@@ -16,6 +16,7 @@ public class DistributeLockController {
     public String select_info(String product_id) {
         return distributeLockService.select_info(product_id);
     }
+
     @RequestMapping("/order.do")
     public String order(String product_id) throws CongestionException {
         //模拟无同步机制的情况
@@ -24,8 +25,9 @@ public class DistributeLockController {
         //模拟加了synchronized的情况
         //return distributeLockService.order2(product_id);
 
-        //模拟加了分布式锁的情况
+        //模拟加了分布式锁的情况，当有异常抛出的时候容易造成死锁
         return distributeLockService.order3(product_id);
+
     }
 
 }

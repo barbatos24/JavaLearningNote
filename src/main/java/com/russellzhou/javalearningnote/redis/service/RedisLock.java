@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 @Service
 public class RedisLock {
 
@@ -24,7 +26,7 @@ public class RedisLock {
         //即：在判断这个key是不是第一次进入这个方法
         if (redisTemplate.opsForValue().setIfAbsent(key, value)) {
             //第一次，即：这个key还没有被赋值的时候
-            logger.info("成功加入redis分布式锁，key为{},value为{}",key,value);
+            logger.info("成功添加redis分布式锁，key为{},value为{}",key,value);
             return true;
         }
         return false;
@@ -42,6 +44,7 @@ public class RedisLock {
         //即：在判断这个key是不是第一次进入这个方法
         if (redisTemplate.opsForValue().setIfAbsent(key, value)) {
             //第一次，即：这个key还没有被赋值的时候
+            logger.info("成功添加redis分布式锁，key为{},value为{}",key,value);
             return true;
         }
         String current_value = redisTemplate.opsForValue().get(key);
