@@ -1,4 +1,4 @@
-package com.russellzhou.javalearningnote.demo.SingleLinkedList;
+package com.russellzhou.javalearningnote.demo.singleLinkedList;
 
 public class Node {
 
